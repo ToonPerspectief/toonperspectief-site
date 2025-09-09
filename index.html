@@ -15,12 +15,17 @@
       --card:#f8fafc;
       --line:#e2e8f0;
       --hero1:#fff7ed;
+      --max: 1100px;
+      --gutter: 32px;
     }
     * { box-sizing: border-box; }
     html, body { margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
                  color:var(--fg); background:var(--bg); line-height:1.6;}
     a { color: var(--acc); }
-    .container { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+    .container { 
+      width: min(var(--max), 100% - (var(--gutter) * 2)); 
+      margin-inline: auto; 
+    }
     nav { position: sticky; top:0; z-index:10; background: rgba(255,255,255,.95); backdrop-filter: saturate(160%) blur(6px);
           border-bottom:1px solid var(--line); }
     nav .wrap { display:flex; align-items:center; justify-content:space-between; padding:10px 0; gap:12px; }
@@ -48,6 +53,11 @@
     ol { padding-left: 18px; }
     .note { color:var(--muted); font-size:14px; }
     footer { padding:28px 16px 40px; text-align:center; color:var(--muted); border-top:1px solid var(--line); }
+  
+@media (max-width: 460px){
+  :root{ --gutter: 22px; }
+}
+
   </style>
 </head>
 <body>
