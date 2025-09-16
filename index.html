@@ -3,15 +3,175 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Toon Perspectief</title>
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="preload" href="styles.css" as="style">
-  <link rel="stylesheet" href="styles.css">
+  <title>Toon Perspectief — Begeleiding aan huis (Drachten e.o.)</title>
+  <meta name="description" content="Begeleiding aan huis: rust, overzicht en meedoen in het dagelijks leven. Wlz-pgb. Drachten e.o. Bel 06-24561549 of mail info@toonperspectief.nl">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted:#64748b;
+      --acc: #ea580c; /* ORANJE */
+      --acc-dark: #c2410c;
+      --card:#f8fafc;
+      --line:#e2e8f0;
+      --hero1:#fff7ed;
+      --max: 1100px;
+      --gutter: 32px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin:0; padding:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+      color:var(--fg); background:var(--bg); line-height:1.6;
+      scroll-behavior: smooth;
+    }
+    a { color: var(--acc); }
+    .container {
+      width: min(var(--max), 100% - (var(--gutter) * 2));
+      margin-inline: auto;
+    }
+    nav[aria-label="Hoofd"] {
+      position: sticky; top:0; z-index:10;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: saturate(160%) blur(6px);
+      border-bottom:1px solid var(--line);
+    }
+    nav .wrap { display:flex; align-items:center; justify-content:space-between; padding:10px 0; gap:12px; }
+    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; }
+    .brand img { height:36px; }
+    .menu { display:flex; gap:6px; list-style:none; margin:0; padding:0; }
+    .menu a { text-decoration:none; color:var(--fg); padding:8px 10px; border-radius:10px; display:block; }
+    .menu a:hover { background:#f1f5f9; }
+    header { border-bottom:1px solid var(--line); background:linear-gradient(180deg,var(--hero1),#fff); }
+    .hero { display:grid; grid-template-columns: 1.3fr .9fr; gap:24px; align-items:center; padding:28px 0; }
+    @media (max-width: 820px){ .hero { grid-template-columns: 1fr; } }
+    h1 { font-size: 34px; margin:0 0 8px; }
+    .sub { color:var(--muted); font-size:18px; margin:0 0 12px; }
+    .cta { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 0; }
+    .btn { display:inline-block; padding:12px 16px; border-radius:12px; text-decoration:none; font-weight:600; border:1px solid transparent; }
+    .btn-primary { background:var(--acc); color:white; }
+    .btn-primary:hover { background: var(--acc-dark); }
+    .btn-outline { background:white; color:var(--acc); border-color:var(--acc); }
+    .btn-outline:hover { border-color: var(--acc-dark); color: var(--acc-dark); }
+    .portrait {
+      width: 100%; max-width: 360px; aspect-ratio: 1/1; border-radius: 18px; border:1px solid var(--line); background:#fff;
+      object-fit: cover; justify-self:center;
+    }
+    main { padding: 28px 0 48px; }
+    section { padding: 24px; background:var(--card); border:1px solid var(--line); border-radius:16px; margin: 18px 0; scroll-margin-top: 80px; }
+    h2 { margin:0 0 10px; font-size:22px; }
+    ul { padding-left: 18px; margin: 8px 0; }
+    ol { padding-left: 18px; }
+    .note { color:var(--muted); font-size:14px; }
+    footer { padding:28px 16px 40px; text-align:center; color:var(--muted); border-top:1px solid var(--line); }
+    @media (max-width: 460px){
+      :root{ --gutter: 22px; }
+    }
+  </style>
 </head>
 <body>
-  <main class="wrapper" aria-label="Toon Perspectief logo">
-    <!-- Vervang images/logo.svg door je eigen logo-bestand met dezelfde naam -->
-    <img src="images/logo.svg" alt="Toon Perspectief">
+  <!-- Hoofdnavigatie -->
+  <nav aria-label="Hoofd">
+    <div class="container wrap">
+      <a class="brand" href="#">
+        <img src="images/logo.svg" alt="Logo Toon Perspectief">
+      </a>
+      <ul class="menu">
+        <li><a href="#voor-wie">Wie ik help</a></li>
+        <li><a href="#mijn-verhaal">Mijn verhaal</a></li>
+        <li><a href="#wat-ik-doe">Wat ik doe</a></li>
+        <li><a href="#werkwijze">Werkwijze</a></li>
+        <li><a href="#praktisch">Praktisch</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header>
+    <div class="container hero">
+      <div>
+        <h1>Begeleiding aan huis</h1>
+        <p class="sub">Ruimte voor <strong>jouw</strong> energie, orde in de randzaken.</p>
+        <p><strong>Loop je vast in praktische zaken?</strong> Met begeleiding aan huis brengen we overzicht in je week en steun bij dagelijkse taken. Zo komt er weer rust en energie vrij om stappen te zetten richting wat jij belangrijk vindt.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="tel:+31624561549">Bel 06-24561549</a>
+          <a class="btn btn-outline" href="mailto:info@toonperspectief.nl">Mailen</a>
+        </div>
+      </div>
+      <div>
+        <img class="portrait" src="images/wander.jpg" alt="Portret">
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="voor-wie">
+      <h2>Wie ik help</h2>
+      <p>Thuisbegeleiding helpt wanneer het overzicht ontbreekt. Ik werk met volwassenen die vastlopen in praktische zaken zoals planning, huishouden en administratie. Mensen met autisme, een lichte verstandelijke beperking, ADHD, angstklachten of stemmingsklachten, of een chronische aandoening zijn welkom. We stemmen af op jouw tempo en op wat voor jou belangrijk is.</p>
+      <p>Heb je een persoonsgebonden budget binnen de Wet langdurige zorg? Dan kun je mijn begeleiding inzetten.</p>
+    </section>
+
+    <section id="mijn-verhaal">
+      <h2>Mijn verhaal</h2>
+      <p>Hoi, ik ben Xander van den Akker en ik geloof dat ieder mens de kans verdient om zijn eigen pad te bewandelen, in vrijheid en met ruimte voor persoonlijke groei. Autonomie en zelfreflectie zijn voor mij belangrijk: terug kunnen kijken op wat geweest is, accepteren wat er nú is en van daaruit verder bouwen.</p>
+      <p>Al sinds 2009 werk ik in de zorg. Het is een vakgebied waarin ik mij thuis voel en waarin ik de kans krijg om van betekenis te zijn voor anderen. Zorg zit ook in mijn familie: het is me met de paplepel ingegoten, en het was voor mij dan ook een logische stap om dit pad te kiezen. Met trots kan ik zeggen dat ik in de loop der jaren veel ervaring heb mogen opbouwen.</p>
+      <p>Buiten mijn werk haal ik veel energie uit muziek, sport en natuur. Muziek helpt mij om rust en plezier te vinden; het geeft me de ruimte om mezelf te verliezen in iets wat betekenisvol is. Ook bewegen en bezig zijn houden me scherp en in balans.</p>
+      <p>Ik heb geleerd dat niet alles vanzelf gaat. Uitdagingen en het verwerken van verlies hebben mij laten zien dat acceptatie vaak de eerste stap is naar ontwikkeling. Vanuit die acceptatie ontstaat er ruimte om nieuwe energie te vinden en je passie te (her)ontdekken.</p>
+      <p>Vrienden en familie omschrijven mij als behulpzaam, zorgvuldig, meelevend en creatief. Zelf denk ik dat ik iemand ben die graag meedenkt, een andere invalshoek biedt en altijd oog houdt voor mogelijkheden.</p>
+      <p>Wat mij typeert, is dat ik mezelf blijf, met mijn eigen mening en eigenaardigheden. Ook ben ik nieuwsgierig en wil ik anderen laten ervaren dat er altijd een weg vooruit is, ook als de stappen soms klein zijn.</p>
+      <p><strong>Welke kleine stap zou voor jou nu het meeste verschil maken?</strong></p>
+    </section>
+
+    <section id="wat-ik-doe">
+      <h2>Wat ik doe</h2>
+      <p>Ik bied zachte structuur en praktische steun thuis. We maken een haalbare weekplanning en ik help met licht huishouden, boodschappen en koken. Ik ondersteun bij basisadministratie, bellen en mailen en het plannen van afspraken. We kijken samen naar meedoen in je omgeving: een netwerk opbouwen en vrijwilligerswerk of werk verkennen. Waar nodig help ik ook digitaal en telefonisch.</p>
+    </section>
+
+    <section id="werkwijze">
+      <h2>Werkwijze in 3 stappen</h2>
+      <ol>
+        <li><strong>Kennismaken</strong> – een vrijblijvend gesprek bij jou thuis of op een rustige plek.</li>
+        <li><strong>Plan maken</strong> – jouw wensen en doelen, in jouw tempo.</li>
+        <li><strong>Starten</strong> – rustig opbouwen; we evalueren en stellen bij waar nodig.</li>
+      </ol>
+
+      <h3>Zo ziet dat er in de praktijk uit</h3>
+      <p>In de kennismaking nemen we rustig de tijd om te voelen of het klikt. We spreken af bij jou thuis of op een rustige plek. Jij vertelt wat je belangrijk vindt; ik luister, stel vragen en laat het daarna graag even bezinken, niets moet, alles in jouw tempo.</p>
+
+      <h3>Van wens naar plan</h3>
+      <p>Samen vertalen we jouw wensen naar een eenvoudig plan: wat wil je bereiken, wat helpt nu al, en welke kleine stappen maken verschil? We leggen praktische afspraken vast, zodat je weet waar je aan toe bent en we onderweg makkelijk kunnen bijstellen.</p>
+
+      <h3>Rustig starten, stap voor stap</h3>
+      <p>We beginnen praktisch en haalbaar: structuur aanbrengen, boodschappen en koken, afspraken plannen, administratie op orde, meedoen in je netwerk, precies wat jou nu helpt. We bouwen rustig op, evalueren regelmatig en passen aan wanneer het anders moet.</p>
+
+      <h3>Voelt dit goed?</h3>
+      <p>Als dit aanspreekt, kijken we samen wat passende eerste stappen zijn. Jij houdt de regie; ik zorg voor houvast en rust, zodat er ruimte ontstaat voor wat voor jou belangrijk is.</p>
+    </section>
+
+    <section id="praktisch">
+      <h2>Praktisch</h2>
+      <h3>Financiering en tarief</h3>
+      <ul>
+        <li>Ik bied begeleiding via de Wet langdurige zorg met een persoonsgebonden budget.</li>
+        <li>Vast tarief 2025: €80 per uur. Reiskosten binnen 15 km enkele reis inbegrepen; daarbuiten in overleg.</li>
+        <li>Minimaal twee uur per bezoek.</li>
+        <li>Jaarlijkse indexatie wanneer het landelijke maximumuurtarief voor de Wet langdurige zorg wijzigt.</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Regio & contact</h2>
+      <p><strong>Regio:</strong> Drachten e.o. (Friesland). Werkdagen; ochtenden/weekend in overleg. Avondmomenten mogelijk; nacht alleen incidenteel in overleg.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="tel:+31624561549">Bel 06-24561549</a>
+        <a class="btn btn-outline" href="mailto:info@toonperspectief.nl">Mail naar info@toonperspectief.nl</a>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    Mogelijkheden zichtbaar maken vanuit een ander perspectief.
+  </footer>
 </body>
 </html>
