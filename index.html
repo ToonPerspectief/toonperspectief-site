@@ -5,78 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Toon Perspectief — Begeleiding aan huis (Drachten e.o.)</title>
   <meta name="description" content="Begeleiding aan huis: rust, overzicht en meedoen in het dagelijks leven. Wlz-pgb. Drachten e.o. Bel 06-24561549 of mail info@toonperspectief.nl">
-  <style>
-    :root {
-      --bg: #ffffff;
-      --fg: #0f172a;
-      --muted:#64748b;
-      --acc: #ea580c; /* ORANJE */
-      --acc-dark: #c2410c;
-      --card:#f8fafc;
-      --line:#e2e8f0;
-      --hero1:#fff7ed;
-      --max: 1100px;
-      --gutter: 32px;
-    }
-    * { box-sizing: border-box; }
-    html, body {
-      margin:0; padding:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
-      color:var(--fg); background:var(--bg); line-height:1.6;
-      scroll-behavior: smooth;
-    }
-    a { color: var(--acc); }
-    .container {
-      width: min(var(--max), 100% - (var(--gutter) * 2));
-      margin-inline: auto;
-    }
-    nav[aria-label="Hoofd"] {
-      position: sticky; top:0; z-index:10;
-      background: rgba(255,255,255,.95);
-      backdrop-filter: saturate(160%) blur(6px);
-      border-bottom:1px solid var(--line);
-    }
-    nav .wrap { display:flex; align-items:center; justify-content:space-between; padding:10px 0; gap:12px; }
-    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; }
-    .brand img { height:36px; }
-    .menu { display:flex; gap:6px; list-style:none; margin:0; padding:0; }
-    .menu a { text-decoration:none; color:var(--fg); padding:8px 10px; border-radius:10px; display:block; }
-    .menu a:hover { background:#f1f5f9; }
-    header { border-bottom:1px solid var(--line); background:linear-gradient(180deg,var(--hero1),#fff); }
-    .hero { display:grid; grid-template-columns: 1.3fr .9fr; gap:24px; align-items:center; padding:28px 0; }
-    @media (max-width: 820px){ .hero { grid-template-columns: 1fr; } }
-    h1 { font-size: 34px; margin:0 0 8px; }
-    .sub { color:var(--muted); font-size:18px; margin:0 0 12px; }
-    .cta { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 0; }
-    .btn { display:inline-block; padding:12px 16px; border-radius:12px; text-decoration:none; font-weight:600; border:1px solid transparent; }
-    .btn-primary { background:var(--acc); color:white; }
-    .btn-primary:hover { background: var(--acc-dark); }
-    .btn-outline { background:white; color:var(--acc); border-color:var(--acc); }
-    .btn-outline:hover { border-color: var(--acc-dark); color: var(--acc-dark); }
-    .portrait {
-      width: 100%; max-width: 360px; aspect-ratio: 1/1; border-radius: 18px; border:1px solid var(--line); background:#fff;
-      object-fit: cover; justify-self:center;
-    }
-    main { padding: 28px 0 48px; }
-    section { padding: 24px; background:var(--card); border:1px solid var(--line); border-radius:16px; margin: 18px 0; scroll-margin-top: 80px; }
-    h2 { margin:0 0 10px; font-size:22px; }
-    ul { padding-left: 18px; margin: 8px 0; }
-    ol { padding-left: 18px; }
-    .note { color:var(--muted); font-size:14px; }
-    footer { padding:28px 16px 40px; text-align:center; color:var(--muted); border-top:1px solid var(--line); }
-    @media (max-width: 460px){
-      :root{ --gutter: 22px; }
-    }
-  </style>
+  <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="images/xander.jpg" as="image" imagesrcset="images/xander.jpg 1x, images/xander.jpg 2x">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/script.js"></script>
 </head>
 <body>
   <!-- Hoofdnavigatie -->
-  <nav aria-label="Hoofd">
-    <div class="container wrap">
+  <nav aria-label="Hoofd" class="nav">
+    <div class="container nav__wrap">
       <a class="brand" href="#">
-        <img src="images/logo.svg" alt="Logo Toon Perspectief">
+        <img src="images/logo.svg" alt="Toon Perspectief logo" />
+        <span class="brand__name">Toon Perspectief</span>
       </a>
-      <ul class="menu">
+
+      <button class="nav__toggle" aria-label="Open menu" aria-controls="menu" aria-expanded="false">
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+        <span class="nav__bar"></span>
+      </button>
+
+      <ul class="menu" id="menu" role="menu">
+        <li><a href="#voor-wie" role="menuitem">Wie ik help</a></li>
+        <li><a href="#mijn-verhaal" role="menuitem">Mijn verhaal</a></li>
+        <li><a href="#wat-ik-doe" role="menuitem">Wat ik doe</a></li>
+        <li><a href="#werkwijze" role="menuitem">Werkwijze</a></li>
+        <li><a href="#praktisch" role="menuitem">Praktisch</a></li>
+        <li><a href="#contact" role="menuitem">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Mobiel paneel (valt onder de balk) -->
+    <div class="menu-panel" id="menu-panel">
+      <ul class="menu menu--panel">
         <li><a href="#voor-wie">Wie ik help</a></li>
         <li><a href="#mijn-verhaal">Mijn verhaal</a></li>
         <li><a href="#wat-ik-doe">Wat ik doe</a></li>
@@ -88,24 +49,24 @@
   </nav>
 
   <!-- Hero -->
-  <header>
-    <div class="container hero">
+  <header class="hero">
+    <div class="container hero__grid">
       <div>
         <h1>Begeleiding aan huis</h1>
         <p class="sub">Ruimte voor <strong>jouw</strong> energie, orde in de randzaken.</p>
         <p><strong>Loop je vast in praktische zaken?</strong> Met begeleiding aan huis brengen we overzicht in je week en steun bij dagelijkse taken. Zo komt er weer rust en energie vrij om stappen te zetten richting wat jij belangrijk vindt.</p>
         <div class="cta">
-          <a class="btn btn-primary" href="tel:+31624561549">Bel 06-24561549</a>
-          <a class="btn btn-outline" href="mailto:info@toonperspectief.nl">Mailen</a>
+          <a class="btn btn--primary" href="tel:+31624561549">Bel 06-24561549</a>
+          <a class="btn btn--outline" href="mailto:info@toonperspectief.nl">Mailen</a>
         </div>
       </div>
-      <div>
-        <img class="portrait" src="images/wander.jpg" alt="Portret">
+      <div class="hero__portrait-wrap">
+        <img class="portrait" src="images/xander.jpg" alt="Portret van Xander" />
       </div>
     </div>
   </header>
 
-  <main class="container">
+  <main class="container main">
     <section id="voor-wie">
       <h2>Wie ik help</h2>
       <p>Thuisbegeleiding helpt wanneer het overzicht ontbreekt. Ik werk met volwassenen die vastlopen in praktische zaken zoals planning, huishouden en administratie. Mensen met autisme, een lichte verstandelijke beperking, ADHD, angstklachten of stemmingsklachten, of een chronische aandoening zijn welkom. We stemmen af op jouw tempo en op wat voor jou belangrijk is.</p>
@@ -164,13 +125,13 @@
       <h2>Regio & contact</h2>
       <p><strong>Regio:</strong> Drachten e.o. (Friesland). Werkdagen; ochtenden/weekend in overleg. Avondmomenten mogelijk; nacht alleen incidenteel in overleg.</p>
       <div class="cta">
-        <a class="btn btn-primary" href="tel:+31624561549">Bel 06-24561549</a>
-        <a class="btn btn-outline" href="mailto:info@toonperspectief.nl">Mail naar info@toonperspectief.nl</a>
+        <a class="btn btn--primary" href="tel:+31624561549">Bel 06-24561549</a>
+        <a class="btn btn--outline" href="mailto:info@toonperspectief.nl">Mail naar info@toonperspectief.nl</a>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="footer">
     Mogelijkheden zichtbaar maken vanuit een ander perspectief.
   </footer>
 </body>
