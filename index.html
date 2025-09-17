@@ -8,40 +8,38 @@
   <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml">
   <link rel="preload" href="images/xander.jpg" as="image" imagesrcset="images/xander.jpg 1x, images/xander.jpg 2x">
   <link rel="stylesheet" href="assets/style.css">
-  <!-- <script defer src="assets/script.js"></script>  Laat uit als dat menu-code bevat -->
+  <!-- Laat uit als assets/script.js ook navigatie-code bevat -->
+  <!-- <script defer src="assets/script.js"></script> -->
 
   <style>
     /* algemene fixes */
     html, body { overflow-x: hidden; }
     img { max-width: 100%; height: auto; }
 
-    /* ===== NAVBAR ===== */
-    .nav { position: sticky; top:0; z-index: 50; background:#fff; }
+    /* ===== NAVBAR (logo links – menu rechts) ===== */
+    .nav { position: sticky; top: 0; z-index: 50; background: #fff; }
     .nav__wrap{
-      display: grid;
-      grid-template-columns: 1fr auto 1fr; /* links menu | midden logo | rechts ruimte/hamburger */
+      display: flex;
+      justify-content: space-between;        /* logo links, menu/hamburger rechts */
       align-items: center;
       min-height: 68px;
       gap: 12px;
     }
 
-    /* LOGO – midden, niet overlap */
-    .brand{ grid-column:2; display:inline-flex; align-items:center; justify-self:center; }
+    /* LOGO links */
+    .brand{ display:inline-flex; align-items:center; }
     .brand img{ height:48px; width:auto; display:block; }
     .brand__name{ display:none !important; }
 
-    /* DESKTOP MENU – links */
+    /* DESKTOP MENU rechts */
     .menu[role="menu"]{
-      grid-column:1;
-      justify-self:start;
-      display:flex; gap:24px; align-items:center; list-style:none; margin:0; padding:0;
-      white-space:nowrap;
+      display:flex; gap:24px; align-items:center;
+      list-style:none; margin:0; padding:0; white-space:nowrap;
     }
     .menu[role="menu"] a{ text-decoration:none; }
 
-    /* HAMBURGER – alleen mobiel zichtbaar (rechts) */
+    /* HAMBURGER (mobiel zichtbaar, rechts) */
     .nav__toggle{
-      grid-column:3; justify-self:end;
       width:40px; height:40px; border:0; background:transparent; padding:6px; cursor:pointer;
       display:none; /* desktop verbergen */
     }
@@ -71,8 +69,8 @@
 
     /* ===== BREAKPOINTS ===== */
     @media (max-width: 900px){
-      .menu[role="menu"]{ display:none; }         /* desktopmenu verbergen op mobiel */
-      .nav__toggle{ display:inline-flex; }        /* hamburger tonen */
+      .menu[role="menu"]{ display:none; }     /* desktopmenu verbergen */
+      .nav__toggle{ display:inline-flex; }    /* hamburger tonen */
       .brand img{ height:44px; }
     }
     @media (min-width:1200px){
@@ -84,7 +82,13 @@
   <!-- NAV -->
   <nav aria-label="Hoofd" class="nav">
     <div class="container nav__wrap">
-      <!-- Desktop menu (links) -->
+      <!-- Logo links -->
+      <a class="brand" href="#">
+        <img src="images/logo.svg" alt="Toon Perspectief logo" />
+        <span class="brand__name">Toon Perspectief</span>
+      </a>
+
+      <!-- Desktop menu rechts -->
       <ul class="menu" id="menu" role="menu">
         <li><a href="#voor-wie" role="menuitem">Wie ik help</a></li>
         <li><a href="#mijn-verhaal" role="menuitem">Mijn verhaal</a></li>
@@ -94,13 +98,7 @@
         <li><a href="#contact" role="menuitem">Contact</a></li>
       </ul>
 
-      <!-- Logo (midden) -->
-      <a class="brand" href="#">
-        <img src="images/logo.svg" alt="Toon Perspectief logo" />
-        <span class="brand__name">Toon Perspectief</span>
-      </a>
-
-      <!-- Hamburger (rechts, alleen mobiel zichtbaar) -->
+      <!-- Hamburger (mobiel, rechts) -->
       <button class="nav__toggle" aria-label="Open menu" aria-controls="menu-panel" aria-expanded="false">
         <span class="nav__bar"></span>
         <span class="nav__bar"></span>
@@ -233,4 +231,3 @@
   </script>
 </body>
 </html>
-
