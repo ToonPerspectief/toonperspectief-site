@@ -8,59 +8,81 @@
   <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml">
   <link rel="preload" href="images/xander.jpg" as="image" imagesrcset="images/xander.jpg 1x, images/xander.jpg 2x">
   <link rel="stylesheet" href="assets/style.css">
-  <script defer src="assets/script.js"></script>
+  <!-- VERMIJD CONFLICT: als assets/script.js ook aan de navigatie zit, laat deze uit -->
+  <!-- <script defer src="assets/script.js"></script> -->
 
-  <!-- OVERRIDES: logo centreren, titel verbergen, hamburger + paneel -->
+  <!-- OVERRIDES: exact gecentreerd logo, compact hamburger, werkend mobiel paneel, CTA centreren -->
   <style>
+    /* algemene fixes */
+    html, body { overflow-x: hidden; }
+    img { max-width: 100%; height: auto; }
+
     /* header layout */
-    .nav { position: relative; z-index: 20; }
+    .nav { position: relative; z-index: 50; background: #fff; }
     .nav__wrap {
       position: relative;
       display: flex; align-items: center; justify-content: center;
-      min-height: 56px;
+      min-height: 64px;
     }
-    .brand { display: inline-flex; align-items: center; }
-    .brand img { display:block; height:44px; width:auto; }
-    /* verberg tekst naast logo */
-    .brand__name { display:none !important; }
 
-    /* hamburger rechts, onafhankelijk van centrerend logo */
+    /* LOGO exact in het midden, ongeacht menu of hamburger */
+    .brand { position: absolute; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; }
+    .brand img { display:block; height: 46px; width: auto; }
+    .brand__name { display: none !important; }
+
+    /* HAMBURGER: kleiner/strakker, rechtsboven */
     .nav__toggle {
       position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
-      background: transparent; border: 0; padding: 8px; cursor: pointer;
+      width: 38px; height: 38px;
+      background: transparent; border: 0; padding: 6px; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
     }
-    .nav__bar { display:block; width:24px; height:2px; margin:5px 0; background: currentColor; }
+    .nav__bar { display:block; width: 20px; height: 2px; margin: 4px 0; background: #222; border-radius: 2px; }
 
-    /* desktop menu blijft zoals in je CSS; mobiel paneel hieronder */
+    /* DESKTOP hoofdnavigatie (laat zoals je had) */
+    /* — niets nodig hier — */
+
+    /* MOBIEL paneel */
     .menu-panel {
       position: fixed; top: 0; right: 0; bottom: 0;
-      width: 80%; max-width: 360px;
+      width: 85vw; max-width: 360px;
       background: #fff;
       transform: translateX(100%);
-      transition: transform .3s ease;
+      transition: transform .28s ease;
       overflow-y: auto;
-      box-shadow: 0 0 0 rgba(0,0,0,0); /* geen schaduw wanneer gesloten */
+      box-shadow: none;
+      z-index: 1000; /* boven alles */
     }
-    .menu-panel.is-open {
-      transform: translateX(0);
-      box-shadow: -24px 0 48px rgba(0,0,0,.12);
-    }
+    .menu-panel.is-open { transform: translateX(0); box-shadow: -24px 0 48px rgba(0,0,0,.12); }
 
-    /* optionele semitransparante backdrop */
+    /* semitransparante backdrop */
     .menu-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,.28);
-      opacity: 0; pointer-events: none; transition: opacity .3s ease;
+      opacity: 0; pointer-events: none; transition: opacity .28s ease;
+      z-index: 999;
     }
     .menu-backdrop.is-open { opacity: 1; pointer-events: auto; }
 
-    /* fijne spacing in panel */
-    .menu--panel { list-style: none; padding: 20px 16px; margin: 0; }
+    .menu--panel { list-style: none; padding: 80px 16px 20px; margin: 0; }
     .menu--panel li { margin: 6px 0; }
-    .menu--panel a { display:block; padding:12px 10px; text-decoration:none; }
+    .menu--panel a { display:block; padding:12px 10px; text-decoration:none; color:#111; }
 
-    /* voorkom dun wit balkje door verborgen desktopmenu op small screens (failsafe) */
+    /* failsafe tegen “dunne witte balkjes” van verborgen desktopmenu op small screens */
     @media (max-width: 900px){
       .menu[role="menu"] { max-height: none; overflow: visible; }
+    }
+
+    /* CTA knoppen rustiger en gecentreerd */
+    .cta { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; margin: 18px auto 10px; }
+    .btn { padding: .65rem 1.1rem; font-size: .95rem; }
+
+    /* iets meer ruimte onder hero-tekst zodat knoppen losser staan */
+    .hero .sub { margin-bottom: .25rem; }
+    .hero .cta { margin-top: .9rem; }
+
+    /* optioneel: op hele brede schermen logo iets groter */
+    @media (min-width: 1200px){
+      .brand img { height: 52px; }
     }
   </style>
 </head>
@@ -73,13 +95,13 @@
         <span class="brand__name">Toon Perspectief</span>
       </a>
 
-      <!-- aria-controls wijst nu naar menu-panel -->
       <button class="nav__toggle" aria-label="Open menu" aria-controls="menu-panel" aria-expanded="false">
         <span class="nav__bar"></span>
         <span class="nav__bar"></span>
         <span class="nav__bar"></span>
       </button>
 
+      <!-- je desktop-UL blijft gewoon staan -->
       <ul class="menu" id="menu" role="menu">
         <li><a href="#voor-wie" role="menuitem">Wie ik help</a></li>
         <li><a href="#mijn-verhaal" role="menuitem">Mijn verhaal</a></li>
@@ -93,7 +115,7 @@
     <!-- Backdrop voor mobiel -->
     <div class="menu-backdrop" id="menu-backdrop" hidden></div>
 
-    <!-- Mobiel paneel (valt onder de balk) -->
+    <!-- Mobiel paneel -->
     <div class="menu-panel" id="menu-panel" hidden>
       <ul class="menu menu--panel">
         <li><a href="#voor-wie">Wie ik help</a></li>
@@ -193,7 +215,7 @@
     Mogelijkheden zichtbaar maken vanuit een ander perspectief.
   </footer>
 
-  <!-- Inline JS voor mobiel menu (werkt naast/zonder assets/script.js) -->
+  <!-- Inline JS voor mobiel menu -->
   <script>
     (function () {
       const btn = document.querySelector('.nav__toggle');
@@ -211,8 +233,7 @@
       }
 
       btn?.addEventListener('click', () => {
-        const isOpen = panel.classList.contains('is-open');
-        openMenu(!isOpen);
+        openMenu(!panel.classList.contains('is-open'));
       });
 
       backdrop?.addEventListener('click', () => openMenu(false));
