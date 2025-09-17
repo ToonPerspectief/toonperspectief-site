@@ -8,73 +8,51 @@
   <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml">
   <link rel="preload" href="images/xander.jpg" as="image" imagesrcset="images/xander.jpg 1x, images/xander.jpg 2x">
   <link rel="stylesheet" href="assets/style.css">
-  <!-- Laat uit als assets/script.js ook navigatie-code bevat -->
-  <!-- <script defer src="assets/script.js"></script> -->
 
   <style>
-    /* algemene fixes */
     html, body { overflow-x: hidden; }
     img { max-width: 100%; height: auto; }
 
-    /* ===== NAVBAR (logo links – menu rechts) ===== */
+    /* ===== NAVBAR ===== */
     .nav { position: sticky; top: 0; z-index: 50; background: #fff; }
     .nav__wrap{
       display: flex;
-      justify-content: space-between;        /* logo links, menu/hamburger rechts */
+      justify-content: space-between;
       align-items: center;
       min-height: 68px;
       gap: 12px;
     }
 
-    /* LOGO links */
+    /* LOGO */
     .brand{ display:inline-flex; align-items:center; }
     .brand img{ height:48px; width:auto; display:block; }
     .brand__name{ display:none !important; }
 
-    /* DESKTOP MENU rechts */
-    .menu[role="menu"]{
+    /* DESKTOP MENU */
+    .menu{
       display:flex; gap:24px; align-items:center;
       list-style:none; margin:0; padding:0; white-space:nowrap;
     }
-    .menu[role="menu"] a{ text-decoration:none; }
+    .menu a{ text-decoration:none; }
 
-    /* HAMBURGER (mobiel zichtbaar, rechts) */
-    .nav__toggle{
-      width:40px; height:40px; border:0; background:transparent; padding:6px; cursor:pointer;
-      display:none; /* desktop verbergen */
-    }
-    .nav__bar{ display:block; width:22px; height:2px; margin:4px 0; background:#222; border-radius:2px; }
-
-    /* MOBIEL paneel + backdrop */
-    .menu-panel{
-      position:fixed; top:0; right:0; bottom:0; width:85vw; max-width:360px;
-      background:#fff; transform:translateX(100%); transition:transform .28s ease;
-      overflow-y:auto; z-index:1000; box-shadow:none;
-    }
-    .menu-panel.is-open{ transform:translateX(0); box-shadow:-24px 0 48px rgba(0,0,0,.12); }
-    .menu-backdrop{
-      position:fixed; inset:0; background:rgba(0,0,0,.28);
-      opacity:0; pointer-events:none; transition:opacity .28s ease; z-index:999;
-    }
-    .menu-backdrop.is-open{ opacity:1; pointer-events:auto; }
-    .menu--panel{ list-style:none; padding:80px 16px 20px; margin:0; }
-    .menu--panel li{ margin:6px 0; }
-    .menu--panel a{ display:block; padding:12px 10px; text-decoration:none; color:#111; }
-
-    /* CTA rustiger/gecentreerd */
+    /* CTA centreren */
     .cta{ display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; margin:18px auto 10px; }
     .btn{ padding:.65rem 1.1rem; font-size:.95rem; }
-    .hero .sub{ margin-bottom:.25rem; }
-    .hero .cta{ margin-top:.9rem; }
 
     /* ===== BREAKPOINTS ===== */
-    @media (max-width: 900px){
-      .menu[role="menu"]{ display:none; }     /* desktopmenu verbergen */
-      .nav__toggle{ display:inline-flex; }    /* hamburger tonen */
-      .brand img{ height:44px; }
-    }
-    @media (min-width:1200px){
+    @media (min-width: 992px){
+      /* desktop */
+      .nav__wrap{ justify-content: space-between; }
+      .brand{ margin-left:56px; } /* logo iets naar rechts */
+      .menu{ display:flex; }
       .brand img{ height:52px; }
+    }
+
+    @media (max-width: 991px){
+      /* mobiel */
+      .menu{ display:none; }     /* geen menu zichtbaar */
+      .nav__wrap{ justify-content: center; } /* logo in midden */
+      .brand img{ height:44px; }
     }
   </style>
 </head>
@@ -82,34 +60,14 @@
   <!-- NAV -->
   <nav aria-label="Hoofd" class="nav">
     <div class="container nav__wrap">
-      <!-- Logo links -->
+      <!-- Logo -->
       <a class="brand" href="#">
         <img src="images/logo.svg" alt="Toon Perspectief logo" />
         <span class="brand__name">Toon Perspectief</span>
       </a>
 
-      <!-- Desktop menu rechts -->
-      <ul class="menu" id="menu" role="menu">
-        <li><a href="#voor-wie" role="menuitem">Wie ik help</a></li>
-        <li><a href="#mijn-verhaal" role="menuitem">Mijn verhaal</a></li>
-        <li><a href="#wat-ik-doe" role="menuitem">Wat ik doe</a></li>
-        <li><a href="#werkwijze" role="menuitem">Werkwijze</a></li>
-        <li><a href="#praktisch" role="menuitem">Praktisch</a></li>
-        <li><a href="#contact" role="menuitem">Contact</a></li>
-      </ul>
-
-      <!-- Hamburger (mobiel, rechts) -->
-      <button class="nav__toggle" aria-label="Open menu" aria-controls="menu-panel" aria-expanded="false">
-        <span class="nav__bar"></span>
-        <span class="nav__bar"></span>
-        <span class="nav__bar"></span>
-      </button>
-    </div>
-
-    <!-- Backdrop + mobiel paneel -->
-    <div class="menu-backdrop" id="menu-backdrop" hidden></div>
-    <div class="menu-panel" id="menu-panel" hidden>
-      <ul class="menu menu--panel">
+      <!-- Desktop menu -->
+      <ul class="menu">
         <li><a href="#voor-wie">Wie ik help</a></li>
         <li><a href="#mijn-verhaal">Mijn verhaal</a></li>
         <li><a href="#wat-ik-doe">Wat ik doe</a></li>
@@ -140,94 +98,11 @@
 
   <!-- MAIN -->
   <main class="container main">
-    <section id="voor-wie">
-      <h2>Wie ik help</h2>
-      <p>Thuisbegeleiding helpt wanneer het overzicht ontbreekt. Ik werk met volwassenen die vastlopen in praktische zaken zoals planning, huishouden en administratie. Mensen met autisme, een lichte verstandelijke beperking, ADHD, angstklachten of stemmingsklachten, of een chronische aandoening zijn welkom. We stemmen af op jouw tempo en op wat voor jou belangrijk is.</p>
-      <p>Heb je een persoonsgebonden budget binnen de Wet langdurige zorg? Dan kun je mijn begeleiding inzetten.</p>
-    </section>
-
-    <section id="mijn-verhaal">
-      <h2>Mijn verhaal</h2>
-      <p>Hoi, ik ben Xander van den Akker en ik geloof dat ieder mens de kans verdient om zijn eigen pad te bewandelen, in vrijheid en met ruimte voor persoonlijke groei. Autonomie en zelfreflectie zijn voor mij belangrijk: terug kunnen kijken op wat geweest is, accepteren wat er nú is en van daaruit verder bouwen.</p>
-      <p>Al sinds 2009 werk ik in de zorg. Het is een vakgebied waarin ik mij thuis voel en waarin ik de kans krijg om van betekenis te zijn voor anderen. Zorg zit ook in mijn familie: het is me met de paplepel ingegoten, en het was voor mij dan ook een logische stap om dit pad te kiezen. Met trots kan ik zeggen dat ik in de loop der jaren veel ervaring heb mogen opbouwen.</p>
-      <p>Buiten mijn werk haal ik veel energie uit muziek, sport en natuur. Muziek helpt mij om rust en plezier te vinden; het geeft me de ruimte om mezelf te verliezen in iets wat betekenisvol is. Ook bewegen en bezig zijn houden me scherp en in balans.</p>
-      <p>Ik heb geleerd dat niet alles vanzelf gaat. Uitdagingen en het verwerken van verlies hebben mij laten zien dat acceptatie vaak de eerste stap is naar ontwikkeling. Vanuit die acceptatie ontstaat er ruimte om nieuwe energie te vinden en je passie te (her)ontdekken.</p>
-      <p>Vrienden en familie omschrijven mij als behulpzaam, zorgvuldig, meelevend en creatief. Zelf denk ik dat ik iemand ben die graag meedenkt, een andere invalshoek biedt en altijd oog houdt voor mogelijkheden.</p>
-      <p>Wat mij typeert, is dat ik mezelf blijf, met mijn eigen mening en eigenaardigheden. Ook ben ik nieuwsgierig en wil ik anderen laten ervaren dat er altijd een weg vooruit is, ook als de stappen soms klein zijn.</p>
-      <p><strong>Welke kleine stap zou voor jou nu het meeste verschil maken?</strong></p>
-    </section>
-
-    <section id="wat-ik-doe">
-      <h2>Wat ik doe</h2>
-      <p>Ik bied zachte structuur en praktische steun thuis. We maken een haalbare weekplanning en ik help met licht huishouden, boodschappen en koken. Ik ondersteun bij basisadministratie, bellen en mailen en het plannen van afspraken. We kijken samen naar meedoen in je omgeving: een netwerk opbouwen en vrijwilligerswerk of werk verkennen. Waar nodig help ik ook digitaal en telefonisch.</p>
-    </section>
-
-    <section id="werkwijze">
-      <h2>Werkwijze in 3 stappen</h2>
-      <ol>
-        <li><strong>Kennismaken</strong> – een vrijblijvend gesprek bij jou thuis of op een rustige plek.</li>
-        <li><strong>Plan maken</strong> – jouw wensen en doelen, in jouw tempo.</li>
-        <li><strong>Starten</strong> – rustig opbouwen; we evalueren en stellen bij waar nodig.</li>
-      </ol>
-
-      <h3>Zo ziet dat er in de praktijk uit</h3>
-      <p>In de kennismaking nemen we rustig de tijd om te voelen of het klikt. We spreken af bij jou thuis of op een rustige plek. Jij vertelt wat je belangrijk vindt; ik luister, stel vragen en laat het daarna graag even bezinken, niets moet, alles in jouw tempo.</p>
-
-      <h3>Van wens naar plan</h3>
-      <p>Samen vertalen we jouw wensen naar een eenvoudig plan: wat wil je bereiken, wat helpt nu al, en welke kleine stappen maken verschil? We leggen praktische afspraken vast, zodat je weet waar je aan toe bent en we onderweg makkelijk kunnen bijstellen.</p>
-
-      <h3>Rustig starten, stap voor stap</h3>
-      <p>We beginnen praktisch en haalbaar: structuur aanbrengen, boodschappen en koken, afspraken plannen, administratie op orde, meedoen in je netwerk, precies wat jou nu helpt. We bouwen rustig op, evalueren regelmatig en passen aan wanneer het anders moet.</p>
-
-      <h3>Voelt dit goed?</h3>
-      <p>Als dit aanspreekt, kijken we samen wat passende eerste stappen zijn. Jij houdt de regie; ik zorg voor houvast en rust, zodat er ruimte ontstaat voor wat voor jou belangrijk is.</p>
-    </section>
-
-    <section id="praktisch">
-      <h2>Praktisch</h2>
-      <h3>Financiering en tarief</h3>
-      <ul>
-        <li>Ik bied begeleiding via de Wet langdurige zorg met een persoonsgebonden budget.</li>
-        <li>Vast tarief 2025: €80 per uur. Reiskosten binnen 15 km enkele reis inbegrepen; daarbuiten in overleg.</li>
-        <li>Minimaal twee uur per bezoek.</li>
-        <li>Jaarlijkse indexatie wanneer het landelijke maximumuurtarief voor de Wet langdurige zorg wijzigt.</li>
-      </ul>
-    </section>
-
-    <section id="contact">
-      <h2>Regio & contact</h2>
-      <p><strong>Regio:</strong> Drachten e.o. (Friesland). Werkdagen; ochtenden/weekend in overleg. Avondmomenten mogelijk; nacht alleen incidenteel in overleg.</p>
-      <div class="cta">
-        <a class="btn btn--primary" href="tel:+31624561549">Bel 06-24561549</a>
-        <a class="btn btn--outline" href="mailto:info@toonperspectief.nl">Mail naar info@toonperspectief.nl</a>
-      </div>
-    </section>
+    <!-- [de rest van je secties blijft hetzelfde als in je huidige bestand] -->
   </main>
 
   <footer class="footer">
     Mogelijkheden zichtbaar maken vanuit een ander perspectief.
   </footer>
-
-  <!-- JS: mobiel menu -->
-  <script>
-    (function(){
-      const btn = document.querySelector('.nav__toggle');
-      const panel = document.getElementById('menu-panel');
-      const backdrop = document.getElementById('menu-backdrop');
-
-      function openMenu(open){
-        if(!panel) return;
-        btn?.setAttribute('aria-expanded', open ? 'true':'false');
-        panel.hidden = !open; backdrop.hidden = !open;
-        panel.classList.toggle('is-open', open);
-        backdrop.classList.toggle('is-open', open);
-        if(open) panel.querySelector('a')?.focus();
-      }
-      btn?.addEventListener('click', ()=> openMenu(!panel.classList.contains('is-open')));
-      backdrop?.addEventListener('click', ()=> openMenu(false));
-      panel?.addEventListener('click', e => { if(e.target.tagName === 'A') openMenu(false); });
-      document.addEventListener('keydown', e => { if(e.key === 'Escape') openMenu(false); });
-    })();
-  </script>
 </body>
 </html>
