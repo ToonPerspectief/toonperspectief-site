@@ -9,6 +9,60 @@
   <link rel="preload" href="images/xander.jpg" as="image" imagesrcset="images/xander.jpg 1x, images/xander.jpg 2x">
   <link rel="stylesheet" href="assets/style.css">
   <script defer src="assets/script.js"></script>
+
+  <!-- OVERRIDES: logo centreren, titel verbergen, hamburger + paneel -->
+  <style>
+    /* header layout */
+    .nav { position: relative; z-index: 20; }
+    .nav__wrap {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 56px;
+    }
+    .brand { display: inline-flex; align-items: center; }
+    .brand img { display:block; height:44px; width:auto; }
+    /* verberg tekst naast logo */
+    .brand__name { display:none !important; }
+
+    /* hamburger rechts, onafhankelijk van centrerend logo */
+    .nav__toggle {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      background: transparent; border: 0; padding: 8px; cursor: pointer;
+    }
+    .nav__bar { display:block; width:24px; height:2px; margin:5px 0; background: currentColor; }
+
+    /* desktop menu blijft zoals in je CSS; mobiel paneel hieronder */
+    .menu-panel {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 80%; max-width: 360px;
+      background: #fff;
+      transform: translateX(100%);
+      transition: transform .3s ease;
+      overflow-y: auto;
+      box-shadow: 0 0 0 rgba(0,0,0,0); /* geen schaduw wanneer gesloten */
+    }
+    .menu-panel.is-open {
+      transform: translateX(0);
+      box-shadow: -24px 0 48px rgba(0,0,0,.12);
+    }
+
+    /* optionele semitransparante backdrop */
+    .menu-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.28);
+      opacity: 0; pointer-events: none; transition: opacity .3s ease;
+    }
+    .menu-backdrop.is-open { opacity: 1; pointer-events: auto; }
+
+    /* fijne spacing in panel */
+    .menu--panel { list-style: none; padding: 20px 16px; margin: 0; }
+    .menu--panel li { margin: 6px 0; }
+    .menu--panel a { display:block; padding:12px 10px; text-decoration:none; }
+
+    /* voorkom dun wit balkje door verborgen desktopmenu op small screens (failsafe) */
+    @media (max-width: 900px){
+      .menu[role="menu"] { max-height: none; overflow: visible; }
+    }
+  </style>
 </head>
 <body>
   <!-- Hoofdnavigatie -->
@@ -19,7 +73,8 @@
         <span class="brand__name">Toon Perspectief</span>
       </a>
 
-      <button class="nav__toggle" aria-label="Open menu" aria-controls="menu" aria-expanded="false">
+      <!-- aria-controls wijst nu naar menu-panel -->
+      <button class="nav__toggle" aria-label="Open menu" aria-controls="menu-panel" aria-expanded="false">
         <span class="nav__bar"></span>
         <span class="nav__bar"></span>
         <span class="nav__bar"></span>
@@ -35,8 +90,11 @@
       </ul>
     </div>
 
+    <!-- Backdrop voor mobiel -->
+    <div class="menu-backdrop" id="menu-backdrop" hidden></div>
+
     <!-- Mobiel paneel (valt onder de balk) -->
-    <div class="menu-panel" id="menu-panel">
+    <div class="menu-panel" id="menu-panel" hidden>
       <ul class="menu menu--panel">
         <li><a href="#voor-wie">Wie ik help</a></li>
         <li><a href="#mijn-verhaal">Mijn verhaal</a></li>
@@ -134,5 +192,38 @@
   <footer class="footer">
     Mogelijkheden zichtbaar maken vanuit een ander perspectief.
   </footer>
+
+  <!-- Inline JS voor mobiel menu (werkt naast/zonder assets/script.js) -->
+  <script>
+    (function () {
+      const btn = document.querySelector('.nav__toggle');
+      const panel = document.getElementById('menu-panel');
+      const backdrop = document.getElementById('menu-backdrop');
+
+      function openMenu(open) {
+        if (!panel) return;
+        btn?.setAttribute('aria-expanded', open ? 'true' : 'false');
+        panel.hidden = !open;
+        backdrop.hidden = !open;
+        panel.classList.toggle('is-open', open);
+        backdrop.classList.toggle('is-open', open);
+        if (open) panel.querySelector('a')?.focus();
+      }
+
+      btn?.addEventListener('click', () => {
+        const isOpen = panel.classList.contains('is-open');
+        openMenu(!isOpen);
+      });
+
+      backdrop?.addEventListener('click', () => openMenu(false));
+      panel?.addEventListener('click', (e) => {
+        const t = e.target;
+        if (t.tagName === 'A') openMenu(false);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') openMenu(false);
+      });
+    })();
+  </script>
 </body>
 </html>
