@@ -8,13 +8,13 @@
   <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml">
   <link rel="preload" href="images/xander.jpg" as="image" imagesrcset="images/xander.jpg 1x, images/xander.jpg 2x">
   <link rel="stylesheet" href="assets/style.css">
-  <!-- Geen extra scripts nodig -->
 
   <style>
-    /* ===== JOUW BESTAANDE FIXES / NAV / BREAKPOINTS (ongewijzigd) ===== */
+    /* ===== Basis (kleine handige fixes) ===== */
     html, body { overflow-x: hidden; }
     img { max-width: 100%; height: auto; }
 
+    /* ===== Navigatie / header ===== */
     .nav { position: sticky; top: 0; z-index: 50; background: #fff; }
     .nav__wrap{
       display: flex;
@@ -25,7 +25,7 @@
     }
 
     .brand{ display:inline-flex; align-items:center; }
-    .brand img{ height:48px; width:auto; display:block; }
+    .brand img{ height:52px; width:auto; display:block; }
     .brand__name{ display:none !important; }
 
     .menu{
@@ -42,37 +42,52 @@
     @media (min-width: 992px){
       .nav__wrap{ justify-content: space-between; }
       .nav .brand{ margin-left:56px; }
-      .brand img{ height:52px; }
       .menu{ display:flex; }
     }
 
     @media (max-width: 991px){
       .menu{ display:none !important; }
       .nav__wrap{ justify-content:center; }
-      .brand img{ height:44px; }
+      .brand img{ height:46px; }
     }
 
-    /* ===== INTRO / PRELOADER ===== */
-    /* Overlay die het hele scherm bedekt tijdens de intro */
+    /* ===== Content containers (optioneel: sluit aan op jouw CSS) ===== */
+    .container{ width:min(1100px, 92%); margin-inline:auto; }
+    .hero{ padding:28px 0 10px; }
+    .hero__grid{ display:grid; grid-template-columns: 1fr; gap:24px; align-items:center; }
+    .hero__portrait-wrap{ display:flex; justify-content:center; }
+    .portrait{ border-radius:12px; width:min(420px, 90%); }
+
+    @media (min-width: 900px){
+      .hero__grid{ grid-template-columns: 1.1fr .9fr; gap:34px; }
+      .hero{ padding:36px 0 16px; }
+    }
+
+    .main{ padding: 24px 0 40px; }
+    .footer{ padding: 22px 0 32px; text-align:center; color:#333; }
+
+    /* ===== Intro / preloader ===== */
+    /* Overlay met jouw logo-achtergrondkleur */
     #intro {
       position: fixed;
       inset: 0;
-      background: #fff;
-      z-index: 2000; /* boven nav en content */
+      background: #f4e4d7ff;        /* jouw tint */
+      z-index: 2000;                 /* boven alles */
       display: grid;
       place-items: center;
-      /* verberg als animatie klaar is (JS zet display:none) */
+      opacity: 1;                    /* start zichtbaar */
+      transition: opacity 0.8s ease; /* crossfade naar site */
     }
 
-    /* Groot centraal logo in de intro */
+    /* Groot logo in het midden dat naar de header schuift en schaalt */
     #intro-logo {
       width: clamp(160px, 28vw, 280px);
       will-change: transform, opacity;
-      transition: transform .7s ease-in-out, opacity .7s ease-in-out;
+      transition: transform 1.2s ease-in-out, opacity 1.2s ease-in-out; /* langzamer: 1.2s */
       opacity: 1;
     }
 
-    /* Tegelijkertijd de site laten infaden zodra de animatie start */
+    /* Content fade-in zodra animatie start */
     body:not(.content-show) .nav,
     body:not(.content-show) .hero,
     body:not(.content-show) .main,
@@ -80,7 +95,7 @@
       opacity: 0;
     }
     .nav, .hero, .main, .footer {
-      transition: opacity .6s ease;
+      transition: opacity .7s ease;
     }
     body.content-show .nav,
     body.content-show .hero,
@@ -89,10 +104,11 @@
       opacity: 1;
     }
 
-    /* Respecteer 'reduce motion' voorkeur: sla animatie over */
+    /* Respecteer 'reduce motion' voorkeuren */
     @media (prefers-reduced-motion: reduce) {
-      #intro-logo { transition: none; }
-      .nav, .hero, .main, .footer { transition: none; }
+      #intro-logo,
+      .nav, .hero, .main, .footer,
+      #intro { transition: none !important; }
     }
   </style>
 </head>
@@ -211,7 +227,7 @@
   </div>
 
   <script>
-    // Intro-animatie: logo beweegt naar de positie van het header-logo
+    // Intro-animatie: logo beweegt naar de positie van het header-logo en overlay crossfadet weg.
     window.addEventListener("load", () => {
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const intro = document.getElementById("intro");
@@ -219,44 +235,42 @@
       const brandImg = document.querySelector(".brand img");
       const body = document.body;
 
-      // Als reduce motion: sla animatie over
+      // Als reduce motion actief is of elementen ontbreken: sla animatie over
       if (prefersReduced || !intro || !introLogo || !brandImg) {
         body.classList.add("content-show");
         if (intro) intro.style.display = "none";
         return;
       }
 
-      // 1) Zorg dat alles kan worden gemeten
-      //    Kleine delay zodat layout/render voltooid is
+      // Korte delay om zeker te zijn dat layout klaar is
       setTimeout(() => {
-        // start content fade-in meteen
+        // Start de content fade-in meteen
         body.classList.add("content-show");
 
-        // Huidige posities
+        // Meet posities
         const introRect = introLogo.getBoundingClientRect();
         const brandRect = brandImg.getBoundingClientRect();
 
-        // Doel: linker-bovenhoek van brandImg
+        // Doeltransformatie: verschuif en schaal naar header-logo
         const dx = brandRect.left - introRect.left;
         const dy = brandRect.top - introRect.top;
-
-        // Schaal naar gelijke breedte als header-logo
         const scale = brandRect.width / introRect.width;
 
-        // Transformeren naar de doelpositie en -grootte
+        // Trigger de beweging
         introLogo.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
-        introLogo.style.opacity = "0.9999"; // nudge om transition altijd te triggeren
+        introLogo.style.opacity = "0.9999"; // nudge voor consistente transition
 
-        // 2) Na einde animatie overlay verwijderen
-        const done = () => {
-          intro.style.display = "none";
-          introLogo.removeEventListener("transitionend", done);
+        // Als de logo-animatie klaar is, laat de overlay crossfaden
+        const afterLogoMove = () => {
+          intro.style.opacity = "0"; // crossfade overlay
+          intro.addEventListener("transitionend", () => {
+            intro.style.display = "none"; // definitief weghalen
+          }, { once: true });
         };
-        introLogo.addEventListener("transitionend", done);
+        introLogo.addEventListener("transitionend", afterLogoMove, { once: true });
 
-      }, 120); // korte startvertraging (≈0,12s) voor stabiele meting
+      }, 120); // ~0.12s
     });
   </script>
 </body>
 </html>
-
