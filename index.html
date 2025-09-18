@@ -36,7 +36,7 @@
     /* Mobiel: header-logo exact gecentreerd */
     @media (max-width: 991px){
       .menu { display: none !important; }
-      .nav__wrap { justify-content: center !important; }  /* forceer centreren */
+      .nav__wrap { justify-content: center !important; }  /* centreer logo */
       .nav .brand { margin-left: 0 !important; }
       .brand img { height: 46px; }
     }
@@ -52,7 +52,7 @@
       .hero { padding: 36px 0 16px; }
     }
 
-    /* CTA-knoppen altijd netjes centreren op mobiel (en mag ook desktop) */
+    /* CTA-knoppen centreren */
     .cta {
       display: flex; align-items: center; justify-content: center;
       gap: 12px; flex-wrap: wrap; margin: 18px auto 10px;
@@ -66,23 +66,23 @@
     /* ===== Intro / preloader — alleen fade, geen beweging ===== */
     #intro {
       position: fixed; inset: 0;
-      background: #f4e4d7;      /* jouw tint (f4e4d7ff) */
+      background: #f4e4d7;      /* jouw tint */
       z-index: 2000;
       display: grid; place-items: center;
-      opacity: 1; transition: opacity .9s ease;
+      opacity: 1; transition: opacity 1.8s ease; /* duur 1.8s */
     }
     #intro-logo {
       width: clamp(160px, 28vw, 280px);
-      opacity: 1; transition: opacity .9s ease;
+      opacity: 1; transition: opacity 1.8s ease; /* duur 1.8s */
       pointer-events: none;
     }
 
-    /* Site faden we in terwijl de overlay wegfadet */
+    /* Site faden we in terwijl de overlay wegfadet (ook 1.8s) */
     body:not(.content-show) .nav,
     body:not(.content-show) .hero,
     body:not(.content-show) .main,
     body:not(.content-show) .footer { opacity: 0; }
-    .nav, .hero, .main, .footer { transition: opacity .9s ease; }
+    .nav, .hero, .main, .footer { transition: opacity 1.8s ease; } /* duur 1.8s */
     body.content-show .nav,
     body.content-show .hero,
     body.content-show .main,
@@ -207,7 +207,7 @@
   </div>
 
   <script>
-    // Eenvoudige crossfade: logo blijft gecentreerd, overlay faden -> site faden in.
+    // Crossfade: logo blijft gecentreerd; overlay faden -> site faden in (1.8s)
     window.addEventListener("load", () => {
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const intro = document.getElementById("intro");
