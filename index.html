@@ -11,52 +11,88 @@
   <!-- Geen extra scripts nodig -->
 
   <style>
-    /* Algemene kleine fixes */
+    /* ===== JOUW BESTAANDE FIXES / NAV / BREAKPOINTS (ongewijzigd) ===== */
     html, body { overflow-x: hidden; }
     img { max-width: 100%; height: auto; }
 
-    /* ===== NAVBAR ===== */
     .nav { position: sticky; top: 0; z-index: 50; background: #fff; }
     .nav__wrap{
       display: flex;
-      justify-content: space-between;   /* desktop: logo links, menu rechts */
+      justify-content: space-between;
       align-items: center;
       min-height: 68px;
       gap: 12px;
     }
 
-    /* Logo */
     .brand{ display:inline-flex; align-items:center; }
     .brand img{ height:48px; width:auto; display:block; }
-    .brand__name{ display:none !important; } /* titel-tekst verbergen */
+    .brand__name{ display:none !important; }
 
-    /* Desktopmenu (rechts) */
     .menu{
       display:flex; gap:24px; align-items:center;
       list-style:none; margin:0; padding:0; white-space:nowrap;
     }
     .menu a{ text-decoration:none; }
 
-    /* CTA iets rustiger/gecentreerd */
     .cta{ display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; margin:18px auto 10px; }
     .btn{ padding:.65rem 1.1rem; font-size:.95rem; }
     .hero .sub{ margin-bottom:.25rem; }
     .hero .cta{ margin-top:.9rem; }
 
-    /* ===== BREAKPOINTS ===== */
-    /* Desktop: logo iets naar rechts voor ‘vrije ruimte’ t.o.v. H1 */
     @media (min-width: 992px){
       .nav__wrap{ justify-content: space-between; }
-      .nav .brand{ margin-left:56px; }  /* ~1 cm; pas desnoods naar 48–64px */
+      .nav .brand{ margin-left:56px; }
       .brand img{ height:52px; }
       .menu{ display:flex; }
     }
 
-    /* Mobiel: geen menu, logo gecentreerd */
     @media (max-width: 991px){
       .menu{ display:none !important; }
       .nav__wrap{ justify-content:center; }
       .brand img{ height:44px; }
+    }
+
+    /* ===== INTRO / PRELOADER ===== */
+    /* Overlay die het hele scherm bedekt tijdens de intro */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 2000; /* boven nav en content */
+      display: grid;
+      place-items: center;
+      /* verberg als animatie klaar is (JS zet display:none) */
+    }
+
+    /* Groot centraal logo in de intro */
+    #intro-logo {
+      width: clamp(160px, 28vw, 280px);
+      will-change: transform, opacity;
+      transition: transform .7s ease-in-out, opacity .7s ease-in-out;
+      opacity: 1;
+    }
+
+    /* Tegelijkertijd de site laten infaden zodra de animatie start */
+    body:not(.content-show) .nav,
+    body:not(.content-show) .hero,
+    body:not(.content-show) .main,
+    body:not(.content-show) .footer {
+      opacity: 0;
+    }
+    .nav, .hero, .main, .footer {
+      transition: opacity .6s ease;
+    }
+    body.content-show .nav,
+    body.content-show .hero,
+    body.content-show .main,
+    body.content-show .footer {
+      opacity: 1;
+    }
+
+    /* Respecteer 'reduce motion' voorkeur: sla animatie over */
+    @media (prefers-reduced-motion: reduce) {
+      #intro-logo { transition: none; }
+      .nav, .hero, .main, .footer { transition: none; }
     }
   </style>
 </head>
@@ -168,5 +204,59 @@
   <footer class="footer">
     Mogelijkheden zichtbaar maken vanuit een ander perspectief.
   </footer>
+
+  <!-- INTRO OVERLAY -->
+  <div id="intro" aria-hidden="true">
+    <img id="intro-logo" src="images/logo.svg" alt="">
+  </div>
+
+  <script>
+    // Intro-animatie: logo beweegt naar de positie van het header-logo
+    window.addEventListener("load", () => {
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const intro = document.getElementById("intro");
+      const introLogo = document.getElementById("intro-logo");
+      const brandImg = document.querySelector(".brand img");
+      const body = document.body;
+
+      // Als reduce motion: sla animatie over
+      if (prefersReduced || !intro || !introLogo || !brandImg) {
+        body.classList.add("content-show");
+        if (intro) intro.style.display = "none";
+        return;
+      }
+
+      // 1) Zorg dat alles kan worden gemeten
+      //    Kleine delay zodat layout/render voltooid is
+      setTimeout(() => {
+        // start content fade-in meteen
+        body.classList.add("content-show");
+
+        // Huidige posities
+        const introRect = introLogo.getBoundingClientRect();
+        const brandRect = brandImg.getBoundingClientRect();
+
+        // Doel: linker-bovenhoek van brandImg
+        const dx = brandRect.left - introRect.left;
+        const dy = brandRect.top - introRect.top;
+
+        // Schaal naar gelijke breedte als header-logo
+        const scale = brandRect.width / introRect.width;
+
+        // Transformeren naar de doelpositie en -grootte
+        introLogo.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+        introLogo.style.opacity = "0.9999"; // nudge om transition altijd te triggeren
+
+        // 2) Na einde animatie overlay verwijderen
+        const done = () => {
+          intro.style.display = "none";
+          introLogo.removeEventListener("transitionend", done);
+        };
+        introLogo.addEventListener("transitionend", done);
+
+      }, 120); // korte startvertraging (≈0,12s) voor stabiele meting
+    });
+  </script>
 </body>
 </html>
+
