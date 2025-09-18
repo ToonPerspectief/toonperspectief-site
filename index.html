@@ -18,20 +18,14 @@
     /* Header */
     .nav { position: sticky; top: 0; z-index: 50; background: #fff; }
     .nav__wrap{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      min-height: 68px;
-      gap: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      min-height: 68px; gap: 12px;
     }
     .brand{ display:inline-flex; align-items:center; }
     .brand img{ height:52px; width:auto; display:block; }
     @media (max-width: 991px){ .brand img{ height:46px; } }
 
-    .menu{
-      display:flex; gap:24px; align-items:center;
-      list-style:none; margin:0; padding:0; white-space:nowrap;
-    }
+    .menu{ display:flex; gap:24px; align-items:center; list-style:none; margin:0; padding:0; white-space:nowrap; }
     @media (max-width: 991px){ .menu{ display:none !important; } }
 
     /* Content */
@@ -48,25 +42,19 @@
 
     /* Intro overlay */
     #intro {
-      position: fixed;
-      inset: 0;
-      background: #f4e4d7ff;         /* jouw tint */
-      z-index: 2000;
-      display: grid;
-      place-items: center;
-      opacity: 1;                     /* start zichtbaar */
-      transition: opacity .8s ease;   /* crossfade overlay */
+      position: fixed; inset: 0; background: #f4e4d7ff;
+      z-index: 2000; display: grid; place-items: center;
+      opacity: 1; transition: opacity .8s ease;
     }
     #intro-logo {
       width: clamp(160px, 28vw, 280px);
       will-change: transform, opacity;
-      transform-origin: top left;     /* strakke schaal/verplaatsing */
+      transform-origin: top left;
       opacity: 1;
-      position: fixed;                /* stabiel t.o.v. viewport */
-      left: 50%; top: 50%;
-      transform: translate(-50%, -50%); /* start gecentreerd */
+      position: fixed; left: 50%; top: 50%;
+      transform: translate(-50%, -50%); /* start exact gecentreerd */
       pointer-events: none;
-      /* Géén transition hier; zetten we in JS per scenario (mobiel/desktop) */
+      /* Let op: transition zetten we in JS per scenario (mobiel/desktop) */
     }
 
     /* Content fade-in */
@@ -80,7 +68,7 @@
     body.content-show .main,
     body.content-show .footer { opacity: 1; }
 
-    /* Respecteer 'reduce motion' */
+    /* Reduce motion */
     @media (prefers-reduced-motion: reduce) {
       #intro-logo, .nav, .hero, .main, .footer, #intro { transition: none !important; }
     }
@@ -199,7 +187,8 @@
   </div>
 
   <script>
-    // Mobiel: twee-staps (kaarsrecht omhoog). Desktop: enkelstaps (zoals eerder).
+    // Desktop: niets aangepast t.o.v. eerdere versie.
+    // Mobiel: horizontaal eerst zonder animatie centreren onder header-logo, daarna alleen verticaal + schaal (kaarsrecht omhoog).
     window.addEventListener("load", () => {
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const isMobile = window.matchMedia("(max-width: 991px)").matches;
@@ -215,40 +204,44 @@
         return;
       }
 
-      // Korte delay voor stabiele layout
+      // Zorg dat layout stabiel is
       requestAnimationFrame(() => {
         const startRect = introLogo.getBoundingClientRect();
         const goalRect  = brandImg.getBoundingClientRect();
 
-        const dx = goalRect.left - startRect.left;
-        const dy = goalRect.top  - startRect.top;
-        const scale = goalRect.width / startRect.width;
+        // CENTRUM-coördinaten (voor perfecte uitlijning)
+        const startCx = startRect.left + startRect.width / 2;
+        const goalCx  = goalRect.left  + goalRect.width  / 2;
+        const cxDelta = goalCx - startCx;
+
+        const dy = goalRect.top - startRect.top;              // verticale delta
+        const scale = goalRect.width / startRect.width;       // schaalsprong
 
         if (isMobile) {
-          // --- MOBIEL: twee-staps, kaarsrecht omhoog ---
-          // Stap 1: horizontaal uitlijnen (zonder animatie)
+          // --- MOBIEL: kaarsrecht omhoog ---
+          // 1) Zonder animatie horizontaal centreren t.o.v. het header-logo
           introLogo.style.transition = "none";
-          introLogo.style.transform = `translate(${dx}px, 0) scale(1)`;
-          void introLogo.getBoundingClientRect(); // reflow
+          // We houden left:50% en vertalen X met calc(-50% + cxDelta)
+          introLogo.style.transform = `translate(calc(-50% + ${cxDelta}px), -50%) scale(1)`;
+          // Forceer reflow zodat bovenstaande meteen staat
+          void introLogo.getBoundingClientRect();
 
-          // Stap 2: verticale beweging + schaal in 1.2s
+          // 2) Alleen VERTICAAL + schaal animeren (X blijft exact gecentreerd)
           introLogo.style.transition = "transform 1.2s ease-in-out, opacity 1.2s ease-in-out";
-          // Content mag al infaden terwijl de move start
-          setTimeout(() => body.classList.add("content-show"), 120);
-          introLogo.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+          body.classList.add("content-show"); // site mag al infaden
+          introLogo.style.transform = `translate(calc(-50% + ${cxDelta}px), calc(-50% + ${dy}px)) scale(${scale})`;
         } else {
-          // --- DESKTOP: enkelstaps zoals je 'm prettig vond ---
+          // --- DESKTOP: enkelstaps zoals je 'm al goed vond ---
+          const dx = goalRect.left - startRect.left;
           introLogo.style.transition = "transform 1.2s ease-in-out, opacity 1.2s ease-in-out";
-          body.classList.add("content-show"); // direct infaden
+          body.classList.add("content-show");
           introLogo.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
         }
 
-        // Overlay crossfade en daarna weghalen
+        // Overlay crossfade en daarna weg
         introLogo.addEventListener("transitionend", () => {
           intro.style.opacity = "0";
-          intro.addEventListener("transitionend", () => {
-            intro.style.display = "none";
-          }, { once: true });
+          intro.addEventListener("transitionend", () => { intro.style.display = "none"; }, { once: true });
         }, { once: true });
       });
     });
