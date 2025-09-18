@@ -10,67 +10,79 @@
   <link rel="stylesheet" href="assets/style.css">
 
   <style>
-    /* Basis */
+    /* ===== Basis ===== */
     html, body { overflow-x: hidden; }
     img { max-width: 100%; height: auto; }
-    .container{ width:min(1100px, 92%); margin-inline:auto; }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
 
-    /* Header */
+    /* ===== Navigatie / header ===== */
     .nav { position: sticky; top: 0; z-index: 50; background: #fff; }
-    .nav__wrap{
-      display: flex; justify-content: space-between; align-items: center;
-      min-height: 68px; gap: 12px;
+    .nav__wrap {
+      display: flex; align-items: center; gap: 12px; min-height: 68px;
+      justify-content: space-between;
     }
-    .brand{ display:inline-flex; align-items:center; }
-    .brand img{ height:52px; width:auto; display:block; }
-    @media (max-width: 991px){ .brand img{ height:46px; } }
+    .brand { display: inline-flex; align-items: center; }
+    .brand img { height: 52px; width: auto; display: block; }
+    .brand__name { display: none !important; }
 
-    .menu{ display:flex; gap:24px; align-items:center; list-style:none; margin:0; padding:0; white-space:nowrap; }
-    @media (max-width: 991px){ .menu{ display:none !important; } }
+    .menu { display: flex; gap: 24px; align-items: center; list-style: none; margin: 0; padding: 0; white-space: nowrap; }
+    .menu a { text-decoration: none; }
 
-    /* Content */
-    .hero{ padding:28px 0 10px; }
-    .hero__grid{ display:grid; grid-template-columns: 1fr; gap:24px; align-items:center; }
-    .hero__portrait-wrap{ display:flex; justify-content:center; }
-    .portrait{ border-radius:12px; width:min(420px, 90%); }
+    /* Desktop: logo iets naar rechts, niet tegen de rand */
+    @media (min-width: 992px){
+      .nav .brand { margin-left: clamp(56px, 8vw, 120px); }
+    }
+
+    /* Mobiel: logo exact gecentreerd, menu verborgen */
+    @media (max-width: 991px){
+      .menu { display: none !important; }
+      .nav__wrap { justify-content: center; }   /* >> centreert het logo */
+      .brand img { height: 46px; }
+      .nav .brand { margin-left: 0; }           /* zeker weten: geen verschuiving links/rechts */
+    }
+
+    /* ===== Content ===== */
+    .hero { padding: 28px 0 10px; }
+    .hero__grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
+    .hero__portrait-wrap { display: flex; justify-content: center; }
+    .portrait { border-radius: 12px; width: min(420px, 90%); }
+
     @media (min-width: 900px){
-      .hero__grid{ grid-template-columns: 1.1fr .9fr; gap:34px; }
-      .hero{ padding:36px 0 16px; }
+      .hero__grid { grid-template-columns: 1.1fr .9fr; gap: 34px; }
+      .hero { padding: 36px 0 16px; }
     }
-    .main{ padding: 24px 0 40px; }
-    .footer{ padding: 22px 0 32px; text-align:center; color:#333; }
 
-    /* Intro overlay */
+    .main { padding: 24px 0 40px; }
+    .footer { padding: 22px 0 32px; text-align: center; color: #333; }
+
+    /* ===== Intro / preloader — alleen fade, geen beweging ===== */
     #intro {
-      position: fixed; inset: 0; background: #f4e4d7ff;
-      z-index: 2000; display: grid; place-items: center;
-      opacity: 1; transition: opacity .8s ease;
+      position: fixed; inset: 0;
+      background: #f4e4d7;      /* jouw tint (f4e4d7ff) */
+      z-index: 2000;
+      display: grid; place-items: center;
+      opacity: 1; transition: opacity .9s ease;
     }
     #intro-logo {
       width: clamp(160px, 28vw, 280px);
-      will-change: transform, opacity;
-      transform-origin: top left;
-      opacity: 1;
-      position: fixed; left: 50%; top: 50%;
-      transform: translate(-50%, -50%); /* start exact gecentreerd */
+      opacity: 1; transition: opacity .9s ease;
       pointer-events: none;
-      /* Let op: transition zetten we in JS per scenario (mobiel/desktop) */
     }
 
-    /* Content fade-in */
+    /* Site faden we in terwijl de overlay wegfadet */
     body:not(.content-show) .nav,
     body:not(.content-show) .hero,
     body:not(.content-show) .main,
     body:not(.content-show) .footer { opacity: 0; }
-    .nav, .hero, .main, .footer { transition: opacity .7s ease; }
+    .nav, .hero, .main, .footer { transition: opacity .9s ease; }
     body.content-show .nav,
     body.content-show .hero,
     body.content-show .main,
     body.content-show .footer { opacity: 1; }
 
-    /* Reduce motion */
-    @media (prefers-reduced-motion: reduce) {
-      #intro-logo, .nav, .hero, .main, .footer, #intro { transition: none !important; }
+    /* Respecteer 'reduce motion' */
+    @media (prefers-reduced-motion: reduce){
+      #intro, #intro-logo, .nav, .hero, .main, .footer { transition: none !important; }
     }
   </style>
 </head>
@@ -80,7 +92,7 @@
     <div class="container nav__wrap">
       <a class="brand" href="#">
         <img src="images/logo.svg" alt="Toon Perspectief logo" />
-        <span class="brand__name" style="display:none">Toon Perspectief</span>
+        <span class="brand__name">Toon Perspectief</span>
       </a>
 
       <ul class="menu">
@@ -181,69 +193,38 @@
     Mogelijkheden zichtbaar maken vanuit een ander perspectief.
   </footer>
 
-  <!-- INTRO OVERLAY -->
+  <!-- INTRO OVERLAY (alleen fade, geen beweging) -->
   <div id="intro" aria-hidden="true">
     <img id="intro-logo" src="images/logo.svg" alt="">
   </div>
 
   <script>
-    // Desktop: niets aangepast t.o.v. eerdere versie.
-    // Mobiel: horizontaal eerst zonder animatie centreren onder header-logo, daarna alleen verticaal + schaal (kaarsrecht omhoog).
+    // Eenvoudige crossfade: logo blijft gecentreerd, overlay faden -> site faden in.
     window.addEventListener("load", () => {
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const isMobile = window.matchMedia("(max-width: 991px)").matches;
-
       const intro = document.getElementById("intro");
       const introLogo = document.getElementById("intro-logo");
-      const brandImg = document.querySelector(".brand img");
       const body = document.body;
 
-      if (prefersReduced || !intro || !introLogo || !brandImg) {
+      if (!intro || !introLogo) return;
+
+      if (prefersReduced) {
         body.classList.add("content-show");
-        if (intro) intro.style.display = "none";
+        intro.style.display = "none";
         return;
       }
 
-      // Zorg dat layout stabiel is
-      requestAnimationFrame(() => {
-        const startRect = introLogo.getBoundingClientRect();
-        const goalRect  = brandImg.getBoundingClientRect();
+      // Start content fade-in
+      body.classList.add("content-show");
 
-        // CENTRUM-coördinaten (voor perfecte uitlijning)
-        const startCx = startRect.left + startRect.width / 2;
-        const goalCx  = goalRect.left  + goalRect.width  / 2;
-        const cxDelta = goalCx - startCx;
+      // Crossfade overlay (logo verdwijnt mee, blijft centraal)
+      intro.style.opacity = "0";
+      introLogo.style.opacity = "0";
 
-        const dy = goalRect.top - startRect.top;              // verticale delta
-        const scale = goalRect.width / startRect.width;       // schaalsprong
-
-        if (isMobile) {
-          // --- MOBIEL: kaarsrecht omhoog ---
-          // 1) Zonder animatie horizontaal centreren t.o.v. het header-logo
-          introLogo.style.transition = "none";
-          // We houden left:50% en vertalen X met calc(-50% + cxDelta)
-          introLogo.style.transform = `translate(calc(-50% + ${cxDelta}px), -50%) scale(1)`;
-          // Forceer reflow zodat bovenstaande meteen staat
-          void introLogo.getBoundingClientRect();
-
-          // 2) Alleen VERTICAAL + schaal animeren (X blijft exact gecentreerd)
-          introLogo.style.transition = "transform 1.2s ease-in-out, opacity 1.2s ease-in-out";
-          body.classList.add("content-show"); // site mag al infaden
-          introLogo.style.transform = `translate(calc(-50% + ${cxDelta}px), calc(-50% + ${dy}px)) scale(${scale})`;
-        } else {
-          // --- DESKTOP: enkelstaps zoals je 'm al goed vond ---
-          const dx = goalRect.left - startRect.left;
-          introLogo.style.transition = "transform 1.2s ease-in-out, opacity 1.2s ease-in-out";
-          body.classList.add("content-show");
-          introLogo.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
-        }
-
-        // Overlay crossfade en daarna weg
-        introLogo.addEventListener("transitionend", () => {
-          intro.style.opacity = "0";
-          intro.addEventListener("transitionend", () => { intro.style.display = "none"; }, { once: true });
-        }, { once: true });
-      });
+      // Na overgang overlay echt weghalen
+      intro.addEventListener("transitionend", () => {
+        intro.style.display = "none";
+      }, { once: true });
     });
   </script>
 </body>
