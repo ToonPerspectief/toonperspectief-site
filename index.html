@@ -28,17 +28,17 @@
     .menu { display: flex; gap: 24px; align-items: center; list-style: none; margin: 0; padding: 0; white-space: nowrap; }
     .menu a { text-decoration: none; }
 
-    /* Desktop: logo iets naar rechts, niet tegen de rand */
+    /* Desktop: logo iets naar rechts (niet strak tegen links) */
     @media (min-width: 992px){
       .nav .brand { margin-left: clamp(56px, 8vw, 120px); }
     }
 
-    /* Mobiel: logo exact gecentreerd, menu verborgen */
+    /* Mobiel: header-logo exact gecentreerd */
     @media (max-width: 991px){
       .menu { display: none !important; }
-      .nav__wrap { justify-content: center; }   /* >> centreert het logo */
+      .nav__wrap { justify-content: center !important; }  /* forceer centreren */
+      .nav .brand { margin-left: 0 !important; }
       .brand img { height: 46px; }
-      .nav .brand { margin-left: 0; }           /* zeker weten: geen verschuiving links/rechts */
     }
 
     /* ===== Content ===== */
@@ -51,6 +51,14 @@
       .hero__grid { grid-template-columns: 1.1fr .9fr; gap: 34px; }
       .hero { padding: 36px 0 16px; }
     }
+
+    /* CTA-knoppen altijd netjes centreren op mobiel (en mag ook desktop) */
+    .cta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin: 18px auto 10px;
+      text-align: center;
+    }
+    .btn { padding: .65rem 1.1rem; font-size: .95rem; }
 
     .main { padding: 24px 0 40px; }
     .footer { padding: 22px 0 32px; text-align: center; color: #333; }
