@@ -11,10 +11,15 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Toon Perspectief — Begeleiding aan huis (Drachten e.o.)</title>
   <meta name="description" content="Begeleiding aan huis: rust, overzicht en meedoen in het dagelijks leven. Wlz-pgb. Drachten e.o. Bel 06-24561549 of mail info@toonperspectief.nl">
+
+  <!-- Preloads -->
   <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="images/portraitpphead.jpg" as="image">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="assets/style.css">
 
-  <!-- Onzichtbare credits/licentie -->
+  <!-- Onzichtbare credits/licentie (laten staan) -->
   <meta name="author" content="Xander van den Akker">
   <meta name="copyright" content="© 2025 Xander van den Akker">
   <meta name="rights" content="Alle rechten voorbehouden voor afbeeldingen en tekst, tenzij anders vermeld.">
@@ -150,16 +155,10 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
         </div>
       </div>
       <div class="hero__portrait-wrap">
-        <picture>
-          <source type="image/webp"
-                  srcset="images/portrait-800.webp"
-                  sizes="(max-width: 800px) 100vw, 800px">
-          <img class="portrait"
-               src="images/portrait-800.jpg"
-               alt="Portret van Xander"
-               width="800" height="800"
-               loading="lazy" decoding="async">
-        </picture>
+        <!-- Gebruik je hernoemde bestand -->
+        <img class="portrait"
+             src="images/portraitpphead.jpg"
+             alt="Portret van Xander">
       </div>
     </div>
   </header>
