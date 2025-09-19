@@ -1,4 +1,10 @@
 <!doctype html>
+<!--
+Site ontworpen door Xander van den Akker (© 2025).
+Alle afbeeldingen en teksten: © Xander van den Akker.
+Niet hergebruiken zonder toestemming.
+Zie /LICENSE-CONTENT.txt voor voorwaarden.
+-->
 <html lang="nl">
 <head>
   <meta charset="utf-8">
@@ -6,8 +12,25 @@
   <title>Toon Perspectief — Begeleiding aan huis (Drachten e.o.)</title>
   <meta name="description" content="Begeleiding aan huis: rust, overzicht en meedoen in het dagelijks leven. Wlz-pgb. Drachten e.o. Bel 06-24561549 of mail info@toonperspectief.nl">
   <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="images/xander.jpg" as="image" imagesrcset="images/xander.jpg 1x, images/xander.jpg 2x">
   <link rel="stylesheet" href="assets/style.css">
+
+  <!-- Onzichtbare credits/licentie -->
+  <meta name="author" content="Xander van den Akker">
+  <meta name="copyright" content="© 2025 Xander van den Akker">
+  <meta name="rights" content="Alle rechten voorbehouden voor afbeeldingen en tekst, tenzij anders vermeld.">
+  <link rel="license" href="/LICENSE-CONTENT.txt">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Toon Perspectief",
+    "url": "https://toonperspectief.nl/",
+    "creator": { "@type": "Person", "name": "Xander van den Akker" },
+    "copyrightHolder": { "@type": "Person", "name": "Xander van den Akker" },
+    "copyrightYear": "2025",
+    "license": "https://toonperspectief.nl/LICENSE-CONTENT.txt"
+  }
+  </script>
 
   <style>
     /* ===== Basis ===== */
@@ -127,7 +150,16 @@
         </div>
       </div>
       <div class="hero__portrait-wrap">
-        <img class="portrait" src="images/xander.jpg" alt="Portret van Xander" />
+        <picture>
+          <source type="image/webp"
+                  srcset="images/portrait-800.webp"
+                  sizes="(max-width: 800px) 100vw, 800px">
+          <img class="portrait"
+               src="images/portrait-800.jpg"
+               alt="Portret van Xander"
+               width="800" height="800"
+               loading="lazy" decoding="async">
+        </picture>
       </div>
     </div>
   </header>
