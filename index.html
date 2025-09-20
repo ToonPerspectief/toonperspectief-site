@@ -97,20 +97,20 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
       background: #f4e4d7;      /* jouw tint */
       z-index: 2000;
       display: grid; place-items: center;
-      opacity: 1; transition: opacity 1.8s ease; /* duur 1.8s */
+      opacity: 1; transition: opacity 2.0s ease; /* duur 2.0s */
     }
     #intro-logo {
       width: clamp(160px, 28vw, 280px);
-      opacity: 1; transition: opacity 1.8s ease; /* duur 1.8s */
+      opacity: 1; transition: opacity 2.0s ease; /* duur 2.0s */
       pointer-events: none;
     }
 
-    /* Site faden we in terwijl de overlay wegfadet (ook 1.8s) */
+    /* Site faden we in terwijl de overlay wegfadet (ook 2.0s) */
     body:not(.content-show) .nav,
     body:not(.content-show) .hero,
     body:not(.content-show) .main,
     body:not(.content-show) .footer { opacity: 0; }
-    .nav, .hero, .main, .footer { transition: opacity 1.8s ease; } /* duur 1.8s */
+    .nav, .hero, .main, .footer { transition: opacity 2.0s ease; } /* duur 2.0s */
     body.content-show .nav,
     body.content-show .hero,
     body.content-show .main,
@@ -120,9 +120,39 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
     @media (prefers-reduced-motion: reduce){
       #intro, #intro-logo, .nav, .hero, .main, .footer { transition: none !important; }
     }
+
+    /* ===== Subtiele site-achtergrond met SVG-logo ===== */
+    .has-soft-bg::before{
+      content:"";
+      position: fixed;        /* blijft staan bij scrollen */
+      inset: 0;
+      background-image: url("images/logo.svg");
+      background-repeat: no-repeat;
+      /* Zet 'm iets uit het midden voor een natuurlijke compositie */
+      background-position: 55% 35%;
+      /* Groot maar niet absurd (vmin schaalt met viewport) */
+      background-size: min(120vmin, 1200px);
+      opacity: 0.08;          /* subtiel: schijnt niet door tekst heen */
+      filter: blur(2px);       /* zachte gloed zodat lijnen niet “schreeuwen” */
+      pointer-events: none;
+      z-index: -1;            /* echt achter alle content */
+    }
+    @media (prefers-color-scheme: dark){
+      .has-soft-bg::before{ opacity: 0.12; }
+    }
+    @media (max-width: 640px){
+      .has-soft-bg::before{
+        opacity: 0.06;
+        filter: blur(1px);
+        background-position: 60% 28%;
+        background-size: 110vmin;
+      }
+    }
   </style>
 </head>
-<body>
+
+<!-- Toegevoegd: class="has-soft-bg" -->
+<body class="has-soft-bg">
   <!-- NAV -->
   <nav aria-label="Hoofd" class="nav">
     <div class="container nav__wrap">
