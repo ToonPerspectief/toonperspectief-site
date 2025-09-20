@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html> 
 <!--
 Site ontworpen door Xander van den Akker (© 2025).
 Alle afbeeldingen en teksten: © Xander van den Akker.
@@ -97,20 +97,20 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
       background: #f4e4d7;      /* jouw tint */
       z-index: 2000;
       display: grid; place-items: center;
-      opacity: 1; transition: opacity 2.0s ease; /* duur 2.0s */
+      opacity: 1; transition: opacity 1.8s ease; /* duur 1.8s */
     }
     #intro-logo {
       width: clamp(160px, 28vw, 280px);
-      opacity: 1; transition: opacity 2.0s ease; /* duur 2.0s */
+      opacity: 1; transition: opacity 1.8s ease; /* duur 1.8s */
       pointer-events: none;
     }
 
-    /* Site faden we in terwijl de overlay wegfadet (ook 2.0s) */
+    /* Site faden we in terwijl de overlay wegfadet (ook 1.8s) */
     body:not(.content-show) .nav,
     body:not(.content-show) .hero,
     body:not(.content-show) .main,
     body:not(.content-show) .footer { opacity: 0; }
-    .nav, .hero, .main, .footer { transition: opacity 2.0s ease; } /* duur 2.0s */
+    .nav, .hero, .main, .footer { transition: opacity 1.8s ease; } /* duur 1.8s */
     body.content-show .nav,
     body.content-show .hero,
     body.content-show .main,
@@ -122,6 +122,10 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
     }
 
     /* ===== Subtiele site-achtergrond met SVG-logo ===== */
+    /* Zorg dat de body een stacking context is */
+    body.has-soft-bg { position: relative; }
+
+    /* Achtergrondlaag: veilig boven body-bg, onder content */
     .has-soft-bg::before{
       content:"";
       position: fixed;        /* blijft staan bij scrollen */
@@ -135,8 +139,12 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
       opacity: 0.08;          /* subtiel: schijnt niet door tekst heen */
       filter: blur(2px);       /* zachte gloed zodat lijnen niet “schreeuwen” */
       pointer-events: none;
-      z-index: -1;            /* echt achter alle content */
+      z-index: 0;              /* boven body-achtergrond, onder content */
     }
+
+    /* Content expliciet boven de achtergrond */
+    .nav, .hero, .main, .footer { position: relative; z-index: 1; }
+
     @media (prefers-color-scheme: dark){
       .has-soft-bg::before{ opacity: 0.12; }
     }
@@ -151,7 +159,6 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
   </style>
 </head>
 
-<!-- Toegevoegd: class="has-soft-bg" -->
 <body class="has-soft-bg">
   <!-- NAV -->
   <nav aria-label="Hoofd" class="nav">
@@ -185,7 +192,6 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
         </div>
       </div>
       <div class="hero__portrait-wrap">
-        <!-- Gebruik je hernoemde bestand -->
         <img class="portrait"
              src="images/portraitpphead.jpg"
              alt="Portret van Xander">
