@@ -121,41 +121,44 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
       #intro, #intro-logo, .nav, .hero, .main, .footer { transition: none !important; }
     }
 
-    /* ===== Subtiele site-achtergrond met SVG-logo ===== */
-    /* Zorg dat de body een stacking context is */
-    body.has-soft-bg { position: relative; }
+/* ===== Subtiele site-achtergrond met SVG-logo ===== */
+/* Zorg dat de body een stacking context is */
+body.has-soft-bg { position: relative; }
 
-    /* Achtergrondlaag: veilig boven body-bg, onder content */
-    .has-soft-bg::before{
-      content:"";
-      position: fixed;        /* blijft staan bij scrollen */
-      inset: 0;
-      background-image: url("images/logo.svg");
-      background-repeat: no-repeat;
-      /* Zet 'm iets uit het midden voor een natuurlijke compositie */
-      background-position: 55% 35%;
-      /* Groot maar niet absurd (vmin schaalt met viewport) */
-      background-size: min(120vmin, 1200px);
-      opacity: 0.08;          /* subtiel: schijnt niet door tekst heen */
-      filter: blur(2px);       /* zachte gloed zodat lijnen niet “schreeuwen” */
-      pointer-events: none;
-      z-index: 0;              /* boven body-achtergrond, onder content */
-    }
+/* Achtergrondlaag: groter en scherper */
+.has-soft-bg::before{
+  content:"";
+  position: fixed;        /* blijft staan bij scrollen */
+  inset: 0;
+  background-image: url("images/logo.svg");
+  background-repeat: no-repeat;
 
-    /* Content expliciet boven de achtergrond */
-    .nav, .hero, .main, .footer { position: relative; z-index: 1; }
+  /* formaat & positie */
+  background-size: min(170vmin, 1700px);  /* GROTER */
+  background-position: 58% 32%;           /* iets naar rechts/boven */
 
-    @media (prefers-color-scheme: dark){
-      .has-soft-bg::before{ opacity: 0.12; }
-    }
-    @media (max-width: 640px){
-      .has-soft-bg::before{
-        opacity: 0.06;
-        filter: blur(1px);
-        background-position: 60% 28%;
-        background-size: 110vmin;
-      }
-    }
+  /* zichtbaarheid & scherpte */
+  opacity: 0.10;          /* iets duidelijker */
+  filter: blur(0.5px);     /* bijna scherp; zet op 0 voor helemaal scherp */
+
+  pointer-events: none;
+  z-index: 0;              /* boven body-achtergrond, onder content */
+}
+
+/* Content expliciet boven de achtergrond */
+.nav, .hero, .main, .footer { position: relative; z-index: 1; }
+
+@media (prefers-color-scheme: dark){
+  .has-soft-bg::before{ opacity: 0.12; }
+}
+@media (max-width: 640px){
+  .has-soft-bg::before{
+    opacity: 0.09;                 /* iets duidelijker op mobiel */
+    filter: blur(0.5px);
+    background-position: 62% 26%;
+    background-size: 140vmin;      /* ook groter op mobiel */
+  }
+}
   </style>
 </head>
 
