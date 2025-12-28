@@ -47,6 +47,8 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
   <meta name="copyright" content="© 2025 Xander van den Akker">
   <meta name="rights" content="Alle rechten voorbehouden voor afbeeldingen en tekst, tenzij anders vermeld.">
   <link rel="license" href="/LICENSE-CONTENT.txt">
+
+  <!-- (A) WebSite schema (jij had deze al) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -57,6 +59,20 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
     "copyrightHolder": { "@type": "Person", "name": "Xander van den Akker" },
     "copyrightYear": "2025",
     "license": "https://toonperspectief.nl/LICENSE-CONTENT.txt"
+  }
+  </script>
+
+  <!-- (B) Extra: LocalBusiness (handig voor vindbaarheid + KvK vermelding) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Toon Perspectief",
+    "url": "https://toonperspectief.nl/",
+    "telephone": "+31624561549",
+    "email": "info@toonperspectief.nl",
+    "areaServed": "Drachten e.o. (Friesland)",
+    "identifier": "KVK 98943073"
   }
   </script>
 
@@ -112,7 +128,12 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
     .btn { padding: .65rem 1.1rem; font-size: .95rem; }
 
     .main { padding: 24px 0 40px; }
+
+    /* Footer iets informatiever */
     .footer { padding: 22px 0 32px; text-align: center; color: #333; }
+    .footer__meta { font-size: .92rem; line-height: 1.5; margin-top: 10px; }
+    .footer__links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+    .footer__links a { text-decoration: none; }
 
     /* ===== Intro / preloader — alleen fade, geen beweging ===== */
     #intro {
@@ -144,44 +165,36 @@ Zie /LICENSE-CONTENT.txt voor voorwaarden.
       #intro, #intro-logo, .nav, .hero, .main, .footer { transition: none !important; }
     }
 
-/* ===== Subtiele site-achtergrond met SVG-logo ===== */
-/* Zorg dat de body een stacking context is */
-body.has-soft-bg { position: relative; }
+    /* ===== Subtiele site-achtergrond met SVG-logo ===== */
+    body.has-soft-bg { position: relative; }
 
-/* Achtergrondlaag: groter en scherper */
-.has-soft-bg::before{
-  content:"";
-  position: fixed;        /* blijft staan bij scrollen */
-  inset: 0;
-  background-image: url("images/logo.svg");
-  background-repeat: no-repeat;
+    .has-soft-bg::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background-image: url("images/logo.svg");
+      background-repeat: no-repeat;
+      background-size: min(170vmin, 1700px);
+      background-position: 58% 32%;
+      opacity: 0.10;
+      filter: blur(0.5px);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  /* formaat & positie */
-  background-size: min(170vmin, 1700px);  /* GROTER */
-  background-position: 58% 32%;           /* iets naar rechts/boven */
+    .nav, .hero, .main, .footer { position: relative; z-index: 1; }
 
-  /* zichtbaarheid & scherpte */
-  opacity: 0.10;          /* iets duidelijker */
-  filter: blur(0.5px);     /* bijna scherp; zet op 0 voor helemaal scherp */
-
-  pointer-events: none;
-  z-index: 0;              /* boven body-achtergrond, onder content */
-}
-
-/* Content expliciet boven de achtergrond */
-.nav, .hero, .main, .footer { position: relative; z-index: 1; }
-
-@media (prefers-color-scheme: dark){
-  .has-soft-bg::before{ opacity: 0.12; }
-}
-@media (max-width: 640px){
-  .has-soft-bg::before{
-    opacity: 0.09;                 /* iets duidelijker op mobiel */
-    filter: blur(0.5px);
-    background-position: 62% 26%;
-    background-size: 140vmin;      /* ook groter op mobiel */
-  }
-}
+    @media (prefers-color-scheme: dark){
+      .has-soft-bg::before{ opacity: 0.12; }
+    }
+    @media (max-width: 640px){
+      .has-soft-bg::before{
+        opacity: 0.09;
+        filter: blur(0.5px);
+        background-position: 62% 26%;
+        background-size: 140vmin;
+      }
+    }
   </style>
 </head>
 
@@ -200,6 +213,7 @@ body.has-soft-bg { position: relative; }
         <li><a href="#wat-ik-doe">Wat ik doe</a></li>
         <li><a href="#werkwijze">Werkwijze</a></li>
         <li><a href="#praktisch">Praktisch</a></li>
+        <li><a href="#klachten">Klachtenregeling</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
@@ -278,6 +292,19 @@ body.has-soft-bg { position: relative; }
         <li>Tarief in overleg.</li>
         <li>Minimaal twee uur per bezoek.</li>
       </ul>
+
+      <h3>Bedrijfsgegevens</h3>
+      <ul>
+        <li><strong>Toon Perspectief</strong> (Xander van den Akker)</li>
+        <li><strong>KvK-nummer:</strong> 98943073</li>
+      </ul>
+    </section>
+
+    <!-- NIEUW: Klachtenregeling (korte, duidelijke vermelding + route) -->
+    <section id="klachten">
+      <h2>Klachtenregeling</h2>
+      <p><em>Toon Perspectief is aangesloten bij een onafhankelijke klachten- en geschillenregeling conform de Wet kwaliteit, klachten en geschillen zorg (Wkkgz), via <a href="https://erisietsmisgegaan.nl" target="_blank" rel="noopener">Er is iets misgegaan</a>.</em></p>
+      <p>Heb je een klacht of ben je ergens ontevreden over? Bespreek dit dan bij voorkeur eerst met mij. Komen we er samen niet uit, dan kun je gebruikmaken van de onafhankelijke klachtenfunctionaris en geschillencommissie waarbij Toon Perspectief is aangesloten.</p>
     </section>
 
     <section id="contact">
@@ -291,7 +318,18 @@ body.has-soft-bg { position: relative; }
   </main>
 
   <footer class="footer">
-    Mogelijkheden zichtbaar maken vanuit een ander perspectief.
+    <div>Mogelijkheden zichtbaar maken vanuit een ander perspectief.</div>
+
+    <div class="footer__meta">
+      <div><strong>Toon Perspectief</strong> — Xander van den Akker</div>
+      <div>KvK: 98943073</div>
+      <div><a href="mailto:info@toonperspectief.nl">info@toonperspectief.nl</a> · <a href="tel:+31624561549">06-24561549</a></div>
+    </div>
+
+    <div class="footer__links" aria-label="Voetnoten">
+      <a href="#klachten">Klachtenregeling</a>
+      <a href="/LICENSE-CONTENT.txt">Licentie</a>
+    </div>
   </footer>
 
   <!-- INTRO OVERLAY (alleen fade, geen beweging) -->
